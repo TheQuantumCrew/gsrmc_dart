@@ -24,7 +24,11 @@ class SimpleRemoteConfig {
   /// *Exceptions:*
   ///
   /// Throws a [SimpleRemoteConfigException] if the request fails, no connection, invalid json config format, etc...
-  Future<void> initilize({required String configUrl}) async {
+  Future<void> initilize({required String configUrl}) {
+    return _initilize(configUrl: configUrl);
+  }
+
+  Future<void> _initilize({required String configUrl}) async {
     try {
       final response = await _client.get(Uri.parse(configUrl));
       if (response.statusCode == 200) {
@@ -51,6 +55,7 @@ class SimpleRemoteConfig {
   /// *Parameters:*
   ///
   /// [key] - The key to get the value for.
+  ///
   /// [defaultValue] - The default value to return if the key is not found in the cache.
   ///
   /// Returns:
@@ -69,16 +74,18 @@ class SimpleRemoteConfig {
   /// final value2 = config.get<bool>('key2');
   /// print(value2); // true
   ///
-  /// final value3 = config.get<String>('key3);
+  /// final value3 = config.get<String>('key3');
   /// print(value3); // null
   ///
   /// final value4 = config.get<String>('key3, defaultValue: 'default');
   /// print(value4); // default
   /// ```
   T? get<T>(String key, {T? defaultValue}) {
-    if (_inMemoryCachedConfig.containsKey(key)) {
-      return _inMemoryCachedConfig[key] as T;
-    }
-    return defaultValue;
+    final value = _get<T>(key);
+    return value ?? defaultValue;
+  }
+
+  T? _get<T>(String key) {
+    return _inMemoryCachedConfig[key] as T?;
   }
 }
