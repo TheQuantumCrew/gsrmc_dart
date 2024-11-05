@@ -25,4 +25,4 @@ jobs:
         run: dart test --coverage=coverage
 
       - name: Deploy
-        run: dart pub publish
+        run: dart pub publish --force

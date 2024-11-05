@@ -1,6 +1,6 @@
 name: simple_remote_config
 description: Simple Remote Config written in Dart
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/TheQuantumCrew/simple_remote_config
 
 environment:
