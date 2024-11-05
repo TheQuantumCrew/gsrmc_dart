@@ -1,5 +1,5 @@
-import 'package:simple_remote_config/simple_remote_config.dart';
-import 'package:simple_remote_config/simple_remote_config_exception.dart';
+import 'package:simple_remote_config/src/simple_remote_config.dart';
+import 'package:simple_remote_config/src/simple_remote_config_exception.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';

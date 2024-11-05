@@ -23,6 +23,3 @@ jobs:
 
       - name: Test
         run: dart test --coverage=coverage
-
-      - name: Deploy
-        run: dart pub publish --force

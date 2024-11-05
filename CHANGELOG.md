@@ -1,3 +1,7 @@
+## 1.0.2 (2024-11-06)
+
+- Redirectory
+
 ## 1.0.1 (2024-11-06)
 
 - Fix docs, private function
