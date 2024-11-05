@@ -24,10 +24,14 @@ jobs:
       - name: Test
         run: dart test --coverage=coverage
 
-      # Check version in pubspec.yaml and create a new tag, if necessary and deploy to pub.dev
-      - name: Check version and deploy
-        run: |
-          VERSION=$(grep 'version: ' pubspec.yaml | sed 's/version: //')
-          git tag -a $VERSION -m "Version $VERSION"
-          git push origin $VERSION
-          dart pub publish --dry-run
+      - name: Versioning
+        id: version
+        run: "echo ::set-output name=version-number::$(grep 'version: ' pubspec.yaml | sed 's/version: //')"
+
+      - name: Release to github
+        uses: softprops/action-gh-release@v0.1.15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ steps.version.outputs.version-number }}
+          generate_release_notes: true
