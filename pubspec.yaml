@@ -1,6 +1,6 @@
 name: simple_remote_config
 description: A simple plugin for helping you to change your application's behaviors, settings,.. without updating the application via network JSON.
-version: 1.1.0
+version: 1.1.2
 topics: [remote, config]
 issue_tracker: https://github.com/TheQuantumCrew/simple_remote_config/issues
 repository: https://github.com/TheQuantumCrew/simple_remote_config

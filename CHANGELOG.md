@@ -1,5 +1,9 @@
 ## 1.1.0 (2024-11-07)
 
+- Update `README.md`
+
+## 1.1.0 (2024-11-07)
+
 - Remove `dart:io` dependency to support web.
 - Update more test.
 
