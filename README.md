@@ -118,15 +118,15 @@ print(valueKey3); // value from key 3
 If provided `key` is not found or provided `T` is incorrect, `get` will return `null`.
 
 ```dart
-final valueKey1 = remoteConfig.get<String>('key1');
-print(valueKey1); // null
+final valueKey4 = remoteConfig.get<String>('key4');
+print(valueKey4); // null
 ```
 
 You can pass `defaultValue` when `get` returns `null`.
 
 ```dart
-final valueKey1 = remoteConfig.get<String>('key1', defaultValue: 'this is default value');
-print(valueKey1); // this is default value
+final valueKey4 = remoteConfig.get<String>('key4', defaultValue: 'this is default value');
+print(valueKey4); // this is default value
 ```
 
 ## Happy coding
