@@ -1,9 +1,10 @@
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:simple_remote_config/src/simple_remote_config.dart';
 import 'package:simple_remote_config/src/simple_remote_config_exception.dart';
 import 'package:test/test.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/testing.dart';
-import 'dart:io';
 
 void main() {
   group('SimpleRemoteConfig', () {
@@ -19,6 +20,62 @@ void main() {
       expect(config.get<bool>('key2'), true);
     });
 
+    test(
+        'initialize successfully loads config and return null when pass wrong type T',
+        () async {
+      final mockClient = MockClient((request) async {
+        return http.Response('{"key1": "value1", "key2": true}', 200);
+      });
+      final config = SimpleRemoteConfig(client: mockClient);
+
+      await config.initilize(configUrl: 'http://example.com/config');
+
+      expect(config.get<bool>('key1'), null);
+      expect(config.get<String>('key2'), null);
+    });
+
+    test(
+        'initialize successfully loads config and '
+        'return null when value of provided key is not found', () async {
+      final mockClient = MockClient((request) async {
+        return http.Response('{"key1": "value1", "key2": true}', 200);
+      });
+      final config = SimpleRemoteConfig(client: mockClient);
+
+      await config.initilize(configUrl: 'http://example.com/config');
+
+      expect(config.get<String>('key3'), null);
+    });
+
+    test(
+        'initialize successfully loads config and '
+        'return defaultValue when value of provided key is not found',
+        () async {
+      final mockClient = MockClient((request) async {
+        return http.Response('{"key1": "value1", "key2": true}', 200);
+      });
+      final config = SimpleRemoteConfig(client: mockClient);
+
+      await config.initilize(configUrl: 'http://example.com/config');
+
+      expect(config.get<String>('key3', defaultValue: 'defaultValue of key3'),
+          'defaultValue of key3');
+    });
+
+    test(
+        'initialize successfully loads config, '
+        'return provided default value when provided type is incorrect',
+        () async {
+      final mockClient = MockClient((request) async {
+        return http.Response('{"key1": "value1", "key2": true}', 200);
+      });
+      final config = SimpleRemoteConfig(client: mockClient);
+
+      await config.initilize(configUrl: 'http://example.com/config');
+
+      expect(config.get<bool>('key1', defaultValue: false), false);
+    });
+
     test('initialize throws exception on non-200 response', () async {
       final mockClient = MockClient((request) async {
         return http.Response('Not Found', 404);
@@ -26,32 +83,40 @@ void main() {
       final config = SimpleRemoteConfig(client: mockClient);
 
       expect(
-        () async => await config.initilize(configUrl: 'http://example.com/config'),
-        throwsA(isA<Exception>().having((e) => e.toString(), 'description', contains('Failed to load remote config'))),
+        () async =>
+            await config.initilize(configUrl: 'http://example.com/config'),
+        throwsA(isA<Exception>().having((e) => e.toString(), 'description',
+            contains('Failed to load remote config'))),
       );
     });
 
-    test('initialize throws SimpleRemoteConfigException on SocketException', () async {
+    test('initialize throws SimpleRemoteConfigException on SocketException',
+        () async {
       final mockClient = MockClient((request) async {
         throw SocketException('No internet connection');
       });
       final config = SimpleRemoteConfig(client: mockClient);
 
       expect(
-        () async => await config.initilize(configUrl: 'http://example.com/config'),
-        throwsA(isA<SimpleRemoteConfigException>().having((e) => e.message, 'message', 'No internet connection')),
+        () async =>
+            await config.initilize(configUrl: 'http://example.com/config'),
+        throwsA(isA<SimpleRemoteConfigException>()
+            .having((e) => e.message, 'message', 'No internet connection')),
       );
     });
 
-    test('initialize throws SimpleRemoteConfigException on FormatException', () async {
+    test('initialize throws SimpleRemoteConfigException on FormatException',
+        () async {
       final mockClient = MockClient((request) async {
         return http.Response('Invalid JSON', 200);
       });
       final config = SimpleRemoteConfig(client: mockClient);
 
       expect(
-        () async => await config.initilize(configUrl: 'http://example.com/config'),
-        throwsA(isA<SimpleRemoteConfigException>().having((e) => e.message, 'message', 'Invalid remote config format')),
+        () async =>
+            await config.initilize(configUrl: 'http://example.com/config'),
+        throwsA(isA<SimpleRemoteConfigException>().having(
+            (e) => e.message, 'message', 'Invalid remote config format')),
       );
     });
   });

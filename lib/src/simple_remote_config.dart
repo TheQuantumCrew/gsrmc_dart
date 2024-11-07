@@ -86,6 +86,10 @@ class SimpleRemoteConfig {
   }
 
   T? _get<T>(String key) {
-    return _inMemoryCachedConfig[key] as T?;
+    try {
+      return _inMemoryCachedConfig[key] as T?;
+    } catch (e) {
+      return null;
+    }
   }
 }
