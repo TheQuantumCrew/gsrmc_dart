@@ -1,5 +1,8 @@
 # Simple Remote Config
 
+[![pub package](https://img.shields.io/pub/v/simple_remote_config.svg)](https://pub.dev/packages/simple_remote_config)
+![cov](https://TheQuantumCrew.github.io/simple_remote_config/badges/coverage.svg)](https://github.com/TheQuantumCrew/simple_remote_config/actions)
+
 A simple plugin for helping you to change your application's behaviors, settings,.. without updating the application via network JSON.
 
 ## Features
@@ -128,4 +131,5 @@ print(valueKey1); // this is default value
 ```
 
 ## Happy coding
+
 That's all for now! Want a feature? Found a bug? Create an [issue](https://github.com/TheQuantumCrew/simple_remote_config/issues/new)!

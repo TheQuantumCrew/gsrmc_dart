@@ -1,12 +1,13 @@
 name: simple_remote_config
-description: Simple Remote Config written in Dart
-version: 1.0.2
+description: A simple plugin for helping you to change your application's behaviors, settings,.. without updating the application via network JSON.
+version: 1.0.3
+topics: [remote, config]
+issue_tracker: https://github.com/TheQuantumCrew/simple_remote_config/issues
 repository: https://github.com/TheQuantumCrew/simple_remote_config
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
-# Add regular dependencies here.
 dependencies:
   http: ^1.2.2
   # path: ^1.8.0

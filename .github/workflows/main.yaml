@@ -1,9 +1,14 @@
-name: Build, Test and Deploy to Pub.dev
+name: Build
 
 on:
+  pull_request:
+    paths-ignore:
+      - "**.md"
   push:
     branches:
-      - main
+      - master
+    paths-ignore:
+      - "**.md"
 
 jobs:
   build:
