@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:simple_remote_config/src/simple_remote_config_exception.dart';
+import 'package:simple_remote_config/simple_remote_config.dart';
 
 /// A [SimpleRemoteConfig] class that fetches a JSON config from a URL and
 /// provides a way to access the config values.
@@ -43,8 +42,7 @@ class SimpleRemoteConfig {
     } catch (e) {
       throw SimpleRemoteConfigException(
           message: switch (e) {
-        SocketException() => 'No internet connection',
-        FormatException() => 'Invalid remote config format',
+        FormatException() => 'Invalid remote config',
         _ => 'Error when handling: $e',
       });
     }
