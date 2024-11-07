@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:simple_remote_config/src/simple_remote_config.dart';
@@ -90,22 +88,8 @@ void main() {
       );
     });
 
-    test('initialize throws SimpleRemoteConfigException on SocketException',
-        () async {
-      final mockClient = MockClient((request) async {
-        throw SocketException('No internet connection');
-      });
-      final config = SimpleRemoteConfig(client: mockClient);
-
-      expect(
-        () async =>
-            await config.initilize(configUrl: 'http://example.com/config'),
-        throwsA(isA<SimpleRemoteConfigException>()
-            .having((e) => e.message, 'message', 'No internet connection')),
-      );
-    });
-
-    test('initialize throws SimpleRemoteConfigException on FormatException',
+    test(
+        'initialize with invalid network JSON throws SimpleRemoteConfigException on FormatException',
         () async {
       final mockClient = MockClient((request) async {
         return http.Response('Invalid JSON', 200);
@@ -115,8 +99,23 @@ void main() {
       expect(
         () async =>
             await config.initilize(configUrl: 'http://example.com/config'),
-        throwsA(isA<SimpleRemoteConfigException>().having(
-            (e) => e.message, 'message', 'Invalid remote config format')),
+        throwsA(isA<SimpleRemoteConfigException>()
+            .having((e) => e.message, 'message', 'Invalid remote config')),
+      );
+    });
+
+    test(
+        'initialize with invalid config url throws SimpleRemoteConfigException on FormatException',
+        () async {
+      final mockClient = MockClient((request) async {
+        return http.Response('Invalid JSON', 200);
+      });
+      final config = SimpleRemoteConfig(client: mockClient);
+
+      expect(
+        () async => await config.initilize(configUrl: 'example.com/config'),
+        throwsA(isA<SimpleRemoteConfigException>()
+            .having((e) => e.message, 'message', 'Invalid remote config')),
       );
     });
   });

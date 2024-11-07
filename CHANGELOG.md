@@ -1,4 +1,9 @@
-## 1.0.3 (2024-11-06)
+## 1.1.0 (2024-11-07)
+
+- Remove `dart:io` dependency to support web.
+- Update more test.
+
+## 1.0.3 (2024-11-07)
 
 - Return `null` when provided `T` is incorrect.
 - Update more test.
