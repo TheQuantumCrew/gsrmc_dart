@@ -1,3 +1,16 @@
+## 2.0.0 (2024-11-27)
+
+**BREAKING CHANGE**
+
+- Change to use specific type function instead of provide [T].
+- Restrict type to `String`, `int`, `double`, `bool`, `Map` via:
+  - `getString`
+  - `getInt`
+  - `getDouble`
+  - `getBool`
+  - `getMap`
+- Add `getAll` to get all values.
+
 ## 1.1.0 (2024-11-07)
 
 - Update `README.md`
