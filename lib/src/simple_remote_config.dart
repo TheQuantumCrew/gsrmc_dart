@@ -49,6 +49,7 @@ class SimpleRemoteConfig {
   }
 
   /// Returns the value of the given key from the in-memory cache.
+  /// {@template get_value}
   ///
   /// *Parameters:*
   ///
@@ -64,30 +65,92 @@ class SimpleRemoteConfig {
   ///
   /// ```dart
   /// final config = SimpleRemoteConfig();
-  /// await config.initilize(configUrl: 'http://example.com/config'); // { "key1": "value1", "key2": true}
+  /// await config.initilize(configUrl: 'http://example.com/config'); // {"key1": "value1", "key2": true, "key3": 1.0, "key4": 100, "key5": { "key6": "value5" }}
   ///
-  /// final value = config.get<String>('key1');
+  /// final value = config.getString('key1');
   /// print(value); // value1
   ///
-  /// final value2 = config.get<bool>('key2');
+  /// final value2 = config.getBool('key2');
   /// print(value2); // true
   ///
-  /// final value3 = config.get<String>('key3');
-  /// print(value3); // null
+  /// final value3 = config.getDouble('key3');
+  /// print(value3); // 1.0
   ///
-  /// final value4 = config.get<String>('key3, defaultValue: 'default');
-  /// print(value4); // default
+  /// final value4 = config.getInt('key4');
+  /// print(value4); // 100
+  ///
+  /// final value5 = config.getMap('key5');
+  /// print(value5); // { "key6": "value5" }
+  ///
+  /// final value6 = config.getString('key7');
+  /// print(value6); // null
+  ///
+  /// final value6Default = config.getString('key7', defaultValue: 'default value');
+  /// print(value6Default); // default value
   /// ```
-  T? get<T>(String key, {T? defaultValue}) {
-    final value = _get<T>(key);
-    return value ?? defaultValue;
+  /// {@endtemplate}
+  T? _get<T>(String key, {T? defaultValue}) {
+    try {
+      final value = _inMemoryCachedConfig[key] as T?;
+      return value ?? defaultValue;
+    } catch (e) {
+      return defaultValue;
+    }
   }
 
-  T? _get<T>(String key) {
-    try {
-      return _inMemoryCachedConfig[key] as T?;
-    } catch (e) {
-      return null;
-    }
+  /// Return the value of the given key from the in-memory cache as a [String].
+  ///
+  /// If the key is not found, return the default value.
+  ///
+  /// {@macro get_value}
+  String? getString(String key, {String? defaultValue}) {
+    return _get<String>(key, defaultValue: defaultValue);
+  }
+
+  /// Return the value of the given key from the in-memory cache as a [bool].
+  ///
+  /// If the key is not found, return the default value.
+  ///
+  /// {@macro get_value}
+  bool? getBool(String key, {bool? defaultValue}) {
+    return _get<bool>(key, defaultValue: defaultValue);
+  }
+
+  /// Return the value of the given key from the in-memory cache as an [int].
+  ///
+  /// If the key is not found, return the default value.
+  ///
+  /// {@macro get_value}
+  int? getInt(String key, {int? defaultValue}) {
+    return _get<int>(key, defaultValue: defaultValue);
+  }
+
+  /// Return the value of the given key from the in-memory cache as a [double].
+  ///
+  /// If the key is not found, return the default value.
+  ///
+  /// {@macro get_value}
+  double? getDouble(String key, {double? defaultValue}) {
+    return _get<double>(key, defaultValue: defaultValue);
+  }
+
+  /// Return the value of the given key from the in-memory cache as a [Map].
+  ///
+  /// If the key is not found, return the default value.
+  ///
+  /// {@macro get_value}
+  Map<String, dynamic>? getMap(
+    String key, {
+    Map<String, dynamic>? defaultValue,
+  }) {
+    return _get<Map<String, dynamic>>(key, defaultValue: defaultValue);
+  }
+
+  /// Return all the values from the in-memory cache.
+  ///
+  /// Returns:
+  /// A [Map] containing all the values from the in-memory cache.
+  Map<String, dynamic> getAll() {
+    return _inMemoryCachedConfig;
   }
 }

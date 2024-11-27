@@ -8,10 +8,10 @@ Future<void> main() async {
 
   await remoteConfig.initilize(configUrl: configUrl);
 
-  final maxQuota = remoteConfig.get<int>("maxQuota");
+  final maxQuota = remoteConfig.getInt("maxQuota");
   print("maxQuota: $maxQuota");
 
-  final enableLog = remoteConfig.get<bool>("enableLog");
+  final enableLog = remoteConfig.getBool("enableLog");
 
   if (enableLog ?? false) {
     print("Log is enabled");
@@ -19,7 +19,7 @@ Future<void> main() async {
 
   final inAppVersion = Version.parse("1.0.0");
 
-  final currentVersion = remoteConfig.get<String>("currentVersion");
+  final currentVersion = remoteConfig.getString("currentVersion");
 
   if (currentVersion != null && inAppVersion < Version.parse(currentVersion)) {
     print("Please update your app");
