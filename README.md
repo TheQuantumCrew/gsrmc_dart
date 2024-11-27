@@ -90,7 +90,10 @@ await remoteConfig.initilize(configUrl: configUrl);
 
 ### Get data from remote
 
-`SimpleRemoteConfig` fetchs data in JSON format, data is returned in key-value format, you can `key` to get `value` via `get` function and type `T` you need (`dynamic` by default). `SimpleRemoteConfig` will return `value` from `key` that you pass and correct type `T`.
+`SimpleRemoteConfig` fetchs data in JSON format, data is returned in key-value format, you can `key` to get `value` via
+get functions, currently `SimpleRemoteConfig` supports `String`, `int`, `double`, `bool`, `Map`.
+
+````dart
 
 Example JSON format:
 
@@ -98,35 +101,56 @@ Example JSON format:
 {
     "key1": true, // boolean
     "key2": 10, // int
-    "key3": "value from key 3" // string
+    "key3": "value from key 3", // string,
+    "key4": {
+        "key4_1": "value from key 4_1",
+        "key4_2": 20
+    }, // map
+    "key5": 10.5 // double
 }
-```
+````
 
-And `get` data:
+And get data:
 
 ```dart
-final valueKey1 = remoteConfig.get<bool>('key1');
+final valueKey1 = remoteConfig.getBool('key1');
 print(valueKey1); // true
 
-final valueKey2 = remoteConfig.get<int>('key2');
+final valueKey2 = remoteConfig.getInt('key2');
 print(valueKey2); // 10
 
-final valueKey3 = remoteConfig.get<String>('key3');
+final valueKey3 = remoteConfig.getString('key3');
 print(valueKey3); // value from key 3
+
+final valueKey4 = remoteConfig.getMap('key4');
+print(valueKey4); // {key4_1: value from key 4_1, key4_2: 20}
+
+final valueKey5 = remoteConfig.getDouble('key5');
+print(valueKey5); // 10.5
 ```
 
-If provided `key` is not found or provided `T` is incorrect, `get` will return `null`.
+If provided `key` is not found or provided `T` is incorrect, get functions will return `null`.
 
 ```dart
-final valueKey4 = remoteConfig.get<String>('key4');
-print(valueKey4); // null
+final valueKey7 = remoteConfig.getString('key7');
+print(valueKey7); // null
 ```
 
-You can pass `defaultValue` when `get` returns `null`.
+You can pass `defaultValue` when get functions returns `null`.
 
 ```dart
-final valueKey4 = remoteConfig.get<String>('key4', defaultValue: 'this is default value');
-print(valueKey4); // this is default value
+final valueKey7 = remoteConfig.getString('key7', defaultValue: 'this is default value');
+print(valueKey7); // this is default value
+```
+
+## Get all data from remote
+
+`SimpleRemoteConfig` provides `getAll` function to get all data from remote.
+
+```dart
+final allData = remoteConfig.getAll();
+print(allData); /// {key1: true, key2: 10, key3: value from key 3, key4: {key4_1: value from key 4_1, key4_2: 20}, key5: 10.5}
+
 ```
 
 ## Happy coding
